@@ -1,0 +1,54 @@
+## Household Power Consumption Peer Assignment, Plot 1
+## ./electric/household_power_consumption.txt
+## Anahita Saghafi 10/05/2014
+##--------------------------------------------------------------------        
+        
+## Function read.zip() to automatically read the zip file from Stack Overflow
+##http://stackoverflow.com/questions/8986818/automate-zip-file-reading-in-r
+
+        read.zip <- function(file, ...) {
+                zipFileInfo <- unzip(file, list=TRUE)
+                if(nrow(zipFileInfo) > 1)
+                        stop("More than one data file inside zip")
+                else
+                        read.csv(unz(file, as.character(zipFileInfo$Name)), ...)
+        }
+##--------------------------------------------------------------------------
+## Create Directory and download the zip file
+
+If(!file.exists("electric"){
+                dir.create("electric")
+        }
+        
+        fileUrl <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
+        download.file(fileUrl,destfile="./electric/electric.zip")
+        datedownloaded <- date()
+        datedownloaded
+
+##read the zip fil using the read.zip() as defined at the beginning of this file
+        
+        powerData <- read.zip("./electric/electric.zip")
+
+## If zip file manually unzipped, teh following will read the file.
+## powerData <- read.table("./electric/household_power_consumption.txt", sep=";", header=TRUE)
+         
+## Subsetting the data frame with the selected dates: "01/02/2007", "02/02/2007"   
+
+        df <- data.frame(Date = c("01/02/2007", "02/02/2007"))
+        as.Date(df$Date, "%m/%d/%Y")
+       
+        DF <- powerData[c(powerData$Date=="1/2/2007",powerData$Date =="2/2/2007"),]
+
+## Plotting ...
+
+        library(datasets)
+        
+        DF[,3]=as.numeric(DF[,3])
+        x<- DF$Global_active_power
+        
+        png("plot1.png", width = 480, height = 480)
+        hist(x, main = "Global Active Power", col = "red", xlab = "Global Active Power(Kilowatts)")
+        dev.off()
+ 
+## Complete!        
+            
