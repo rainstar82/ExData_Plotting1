@@ -1,9 +1,9 @@
-## Household Power Consumption Peer Assignment, Plot 2
+## Household Power Consumption Peer Assignment, Plot 3
 ## ./electric/household_power_consumption.txt
-## Anahita Saghafi 10/05/2014
+## Anahita Saghafi 11/05/2014
 ##--------------------------------------------------------------------        
-        
- 
+
+
 ##Set the working directory
 setwd("C:\\Users\\anahitas\\Documents\\coursera\\Exploratory Data Analysis\\peer")
 
@@ -11,20 +11,20 @@ setwd("C:\\Users\\anahitas\\Documents\\coursera\\Exploratory Data Analysis\\peer
 ## Create Directory and download the zip file
 
 If(!file.exists("electric"){
-                dir.create("electric")
-        }
-        
-        fileUrl <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
-        download.file(fileUrl,destfile="./electric/electric.zip")
-        datedownloaded <- date()
-        datedownloaded
+        dir.create("electric")
+}
+
+fileUrl <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
+download.file(fileUrl,destfile="./electric/electric.zip")
+datedownloaded <- date()
+datedownloaded
 
 ## If zip file manually unzipped, the following will read the file.
 
 powerData <- read.table("./electric/household_power_consumption.txt", sep=";", header=TRUE, colClasses = "character")
-         
+
 ## Subsetting the data frame with the selected dates: "01/02/2007", "02/02/2007"   
-      
+
 DF1 <- powerData[c(powerData$Date =="1/2/2007"),]
 DF2 <- powerData[c(powerData$Date=="2/2/2007"),]
 
@@ -38,21 +38,24 @@ DF <- rbind(DF1,DF2)
 ##df$dateTime <- as.POSIXct(strptime(paste(part1,part2), "format1 format2"))
 
 DF$DateTime <- as.POSIXct(strptime(paste(DF$Date,DF$Time), "%d/%m/%Y %H:%M:%S"))
-
+ 
 ## Plotting ...
 
-        library(datasets)
-        
-        x <- DF$DateTime
-        y<- as.numeric(as.character(DF$Global_active_power))
-        
-        ##DF$Day <- weekdays(as.Date(DF$Date))
-         
+library(datasets)
 
-        png("plot2.png", width = 480, height = 480)
-        with(DF, plot(x,y, type="l", xlab="", ylab="Global Active Power(Kilowatts)" ))
-        dev.off()
+x <- DF$DateTime
+ 
+y1<- DF$Sub_metering_1
+y2<- DF$Sub_metering_2
+y3<- DF$Sub_metering_3
 
  
-## Complete!        
-            
+png("plot3.png", width = 480, height = 480)
+with(DF, plot(x,y1, type="l",ylab = "Energy sub metering", xlab=""))
+with(subset(DF, colname = "Sub_metering_2"), lines(x,y2, type="l", col="red"))
+with(subset(DF, colname = "Sub_metering_3"), lines(x,y3, type="l", col="blue"))
+ 
+legend("topright",cex=0.7, lty = 1, col = c("black", "red", "blue"), legend = c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"))
+dev.off()
+
+## Complete!   
