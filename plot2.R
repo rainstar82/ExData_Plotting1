@@ -50,7 +50,7 @@ DF$DateTime <- as.POSIXct(strptime(paste(DF$Date,DF$Time), "%d/%m/%Y %H:%M:%S"))
          
 
         png("plot2.png", width = 480, height = 480)
-        with(DF, plot(x,y, type="l", ylab="Global Active Power(Kilowatts") )
+        with(DF, plot(x,y, type="l", ylab="Global Active Power(Kilowatts)" ))
         dev.off()
 
  

@@ -28,17 +28,25 @@ powerData <- read.table("./electric/household_power_consumption.txt", sep=";", h
 ## Subsetting the data frame with the selected dates: "01/02/2007", "02/02/2007"   
 
       
-DF <- powerData[c(powerData$Date=="1/2/2007",powerData$Date =="2/2/2007"),]
+## Subsetting the data frame with the selected dates: "01/02/2007", "02/02/2007"   
+
+DF1 <- powerData[c(powerData$Date =="1/2/2007"),]
+DF2 <- powerData[c(powerData$Date=="2/2/2007"),]
+
+## Binding  the data for two selected dates.
+
+DF <- rbind(DF1,DF2)
+
 
 ## Plotting ...
 
         library(datasets)
         
 
-        x<- as.numeric(as.character(DF$Global_active_power))
+        z<- as.numeric(as.character(DF$Global_active_power))
         
         png("plot1.png", width = 480, height = 480)
-        hist(x, main = "Global Active Power", col = "red", xlab = "Global Active Power(Kilowatts)")
+        hist(z, main = "Global Active Power", col = "red", xlab = "Global Active Power(Kilowatts)")
         dev.off()
  
 ## Complete!        
