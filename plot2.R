@@ -1,4 +1,4 @@
-## Household Power Consumption Peer Assignment, Plot 1
+## Household Power Consumption Peer Assignment, Plot 2
 ## ./electric/household_power_consumption.txt
 ## Anahita Saghafi 10/05/2014
 ##--------------------------------------------------------------------        
@@ -19,27 +19,40 @@ If(!file.exists("electric"){
         datedownloaded <- date()
         datedownloaded
 
-
-
 ## If zip file manually unzipped, the following will read the file.
 
-powerData <- read.table("./electric/household_power_consumption.txt", sep=";", header=TRUE)
+powerData <- read.table("./electric/household_power_consumption.txt", sep=";", header=TRUE, colClasses = "character")
          
 ## Subsetting the data frame with the selected dates: "01/02/2007", "02/02/2007"   
-
       
-DF <- powerData[c(powerData$Date=="1/2/2007",powerData$Date =="2/2/2007"),]
+DF1 <- powerData[c(powerData$Date =="1/2/2007"),]
+DF2 <- powerData[c(powerData$Date=="2/2/2007"),]
+
+## Binding  the data for two selected dates.
+
+DF <- rbind(DF1,DF2)
+
+
+##Creating DateTime   
+## General Syntax is
+##df$dateTime <- as.POSIXct(strptime(paste(part1,part2), "format1 format2"))
+
+DF$DateTime <- as.POSIXct(strptime(paste(DF$Date,DF$Time), "%d/%m/%Y %H:%M:%S"))
 
 ## Plotting ...
 
         library(datasets)
         
-
-        x<- as.numeric(as.character(DF$Global_active_power))
+        x <- DF$DateTime
+        y<- as.numeric(as.character(DF$Global_active_power))
         
-        png("plot1.png", width = 480, height = 480)
-        hist(x, main = "Global Active Power", col = "red", xlab = "Global Active Power(Kilowatts)")
+        ##DF$Day <- weekdays(as.Date(DF$Date))
+         
+
+        png("plot2.png", width = 480, height = 480)
+        with(DF, plot(x,y, type="l", ylab="Global Active Power(Kilowatts") )
         dev.off()
+
  
 ## Complete!        
             
